@@ -42,7 +42,7 @@ public class AuthController {
         }
 
         try {
-            User user = userService.signup(signupDto);
+            userService.signup(signupDto);
             String message = messageSource.getMessage("flash.user.created", null, locale);
             redirectAttributes.addFlashAttribute("successMessage", message);
             return "redirect:/";

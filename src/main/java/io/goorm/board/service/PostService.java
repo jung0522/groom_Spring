@@ -20,10 +20,10 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    // SEQ로 게시글 조회
-    public Post findBySeq(Long seq) {
-        return postRepository.findById(seq)
-                .orElseThrow(() -> new PostNotFoundException(seq));
+    // ID로 게시글 조회
+    public Post findById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
     }
 
     // 게시글 저장
@@ -34,17 +34,47 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public Post update(Long seq, Post updatePost) {
-        Post post = findBySeq(seq);
+    public Post update(Long id, Post updatePost) {
+        Post post = findById(id);
         post.setTitle(updatePost.getTitle());
         post.setContent(updatePost.getContent());
+        post.setImagePath(updatePost.getImagePath());
         // author는 수정하지 않음 (기존 작성자 유지)
         return post;  // @Transactional에 의해 자동으로 UPDATE 쿼리 실행
     }
 
     // 게시글 삭제
     @Transactional
-    public void delete(Long seq) {
-        postRepository.deleteById(seq);
+    public void delete(Long id) {
+        postRepository.deleteById(id);
+    }
+
+    // 조회수 증가
+    @Transactional
+    public Post incrementViewCount(Long id) {
+        Post post = findById(id);
+        post.setViewCount(post.getViewCount() + 1);
+        return post;
+    }
+
+    // 검색 기능
+    public List<Post> searchPosts(String keyword, String searchType) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return findAll();
+        }
+        
+        keyword = keyword.trim();
+        
+        switch (searchType) {
+            case "title":
+                return postRepository.findByTitleContainingIgnoreCase(keyword);
+            case "content":
+                return postRepository.findByContentContainingIgnoreCase(keyword);
+            case "author":
+                return postRepository.findByAuthorNicknameContaining(keyword);
+            case "all":
+            default:
+                return postRepository.findByTitleOrContentContaining(keyword);
+        }
     }
 }

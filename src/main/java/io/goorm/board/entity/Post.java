@@ -18,7 +18,7 @@ public class Post {
 
     @Id  // Primary Key 지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가
-    private Long seq;  // 게시글 번호
+    private Long id;  // 게시글 번호
 
     @NotBlank(message = "{post.title.required}")
     @Size(min = 1, max = 200, message = "{post.title.size}")
@@ -40,4 +40,7 @@ public class Post {
     @CreationTimestamp  // 자동으로 현재 시간 입력
     @Column(updatable = false)  // 수정 불가
     private LocalDateTime createdAt;  // 작성일시
+
+    @Column(name = "image_path")
+    private String imagePath;  // 이미지 파일 경로
 }

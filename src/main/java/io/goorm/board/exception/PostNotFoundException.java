@@ -5,19 +5,19 @@ package io.goorm.board.exception;
  */
 public class PostNotFoundException extends RuntimeException {
     
-    private final Long postId;
+    private final Long id;
     
-    public PostNotFoundException(Long postId) {
-        super("Post not found with id: " + postId);
-        this.postId = postId;
+    public PostNotFoundException(Long id) {
+        super("Post not found with id: " + id);
+        this.id = id;
     }
     
     public PostNotFoundException(String message) {
         super(message);
-        this.postId = null;
+        this.id = null;
     }
     
-    public Long getPostId() {
-        return postId;
+    public Long getId() {
+        return id;
     }
 }

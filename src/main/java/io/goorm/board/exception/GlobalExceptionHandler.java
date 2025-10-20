@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         );
 
         model.addAttribute("error", errorMessage);
-        model.addAttribute("postId", e.getPostId());
+        model.addAttribute("postId", e.getId());
 
         return "error/404";
     }
